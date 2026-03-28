@@ -6,37 +6,38 @@
 
 [English](README.en.md)
 
-### Demo
+<details>
+<summary>Demo (결과물 미리보기)</summary>
 
 <!-- TODO: R2 영상 URL로 교체 -->
 [![Demo Preview](docs/demo-preview.gif)](https://github.com/anomie7/toon-generator-skill)
 
-> GIF를 클릭하면 전체 데모 영상을 볼 수 있습니다
+</details>
 
-### 개요
+### 이런 걸 할 수 있어요
 
-인스타툰 제작의 전체 파이프라인을 자동화하는 Claude Code 스킬 패키지입니다.
+1. 아이디어만 있으면 AI가 질문하며 기획을 잡아줍니다 (캐릭터, 스토리, 아트 스타일)
+2. 기획을 바탕으로 에피소드별 웹툰 이미지를 자동 생성합니다
+3. 생성된 이미지를 인스타그램 릴스 영상으로 변환합니다
 
 ```
-toon-prep                    toon-gen                      toon-reels
-(콘텐츠 준비)          -->   (이미지 생성)           -->   (릴스 영상)
+toon-prep               toon-gen                toon-reels
+(기획 준비)       -->   (이미지 생성)     -->   (릴스 영상)
 
- 인터뷰                       프롬프트 JSON                  슬라이드 수집
-   |                            |                              |
- 문서 생성                    ref 탐색/검수                   페이드 전환
-   |                            |                              |
- 레퍼런스 이미지               Gemini API 생성                 BGM 합성
-                                                               |
-                                                            MP4 출력
+ AI 인터뷰               레퍼런스 탐색            슬라이드 조합
+   |                       |                       |
+ 문서 자동 생성            품질 검수                BGM 합성
+   |                       |                       |
+ 참고 이미지 생성          Gemini로 그리기          MP4 출력
 ```
 
 ### 포함된 스킬
 
-| 스킬 | 설명 | 주요 기능 |
-|------|------|-----------|
-| **toon-prep** | 콘텐츠 준비 | 소크라테스식 인터뷰 → 캐릭터/콘티/아트디렉션 문서 → 레퍼런스 이미지 생성 |
-| **toon-gen** | 이미지 생성 | 프롬프트 JSON → ref 탐색(reference-explorer) → 적합성 검수(inspect) → Gemini API 이미지 생성 |
-| **toon-reels** | 릴스 영상 | 슬라이드 이미지 → 페이드 전환 → BGM 합성 → MP4 (4:5 / 9:16) |
+| 스킬 | 한 줄 설명 |
+|------|-----------|
+| **toon-prep** | AI 인터뷰로 기획 수집 → 캐릭터/콘티/아트디렉션 문서 자동 생성 → 참고 이미지 생성 |
+| **toon-gen** | 참고 이미지 탐색 → 품질 검수 → Gemini API로 웹툰 이미지 생성 |
+| **toon-reels** | 슬라이드 이미지 → 페이드 전환 + BGM → 인스타 릴스 MP4 |
 
 ### 설치
 
@@ -62,7 +63,7 @@ cd .claude/skills/toon-generator-skill && npm install
 
 ### 사전 조건
 
-1. **GEMINI_API_KEY**: [Google AI Studio](https://aistudio.google.com/)에서 발급
+1. **GEMINI_API_KEY**: [Google AI Studio](https://aistudio.google.com/)에서 무료로 발급받을 수 있습니다
 
    ```bash
    export GEMINI_API_KEY="your-key-here"
@@ -146,6 +147,9 @@ content/
 
 `--model`로 고정 지정하면 자동 선택을 무시합니다.
 
+<details>
+<summary>아키텍처 / 커스터마이징 (개발자용)</summary>
+
 ### 아키텍처
 
 ```
@@ -153,20 +157,20 @@ toon-generator-skill/
   toon-prep/
     SKILL.md                    # 스킬 정의
     agents/
-      interviewer.md            # 소크라테스식 인터뷰 에이전트
+      interviewer.md            # AI 인터뷰 에이전트
       doc-generator.md          # 문서 생성 에이전트
     scripts/
-      generate-refs.ts          # 레퍼런스 이미지 생성 (Gemini API)
+      generate-refs.ts          # 참고 이미지 생성 (Gemini API)
     templates/                  # 문서 템플릿 (9종)
 
   toon-gen/
     SKILL.md                    # 스킬 정의
     agents/
-      story-writer.md           # 프롬프트 JSON 생성 에이전트
-      reference-explorer.md     # ref 탐색/추천 에이전트
+      story-writer.md           # 이미지 프롬프트 생성 에이전트
+      reference-explorer.md     # 참고 이미지 탐색/추천 에이전트
     scripts/
       generate.ts               # 이미지 생성 (Gemini API)
-      inspect.ts                # ref/이미지 적합성 검증 (Gemini API)
+      inspect.ts                # 이미지 품질 검증 (Gemini API)
     lib/
       config.ts                 # 설정 + 모델 레지스트리
       types.ts                  # 타입 정의 (Zod 스키마)
@@ -183,6 +187,8 @@ toon-generator-skill/
 - **문서 템플릿**: `toon-prep/templates/*.tmpl.md`를 수정하면 생성되는 문서 구조를 변경할 수 있습니다
 - **아트 디렉션**: `content/visual/art-direction.md`에 스타일/금지 요소를 정의하면 모든 프롬프트에 자동 반영됩니다
 - **에이전트 프롬프트**: `agents/*.md` 파일을 수정하여 에이전트 동작을 조정할 수 있습니다
+
+</details>
 
 ### Roadmap
 
