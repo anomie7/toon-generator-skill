@@ -40,14 +40,20 @@ toon-prep                    toon-gen                      toon-reels
 
 ### 설치
 
-#### 방법 1: 글로벌 설치 (모든 프로젝트에서 사용)
+#### skills.sh (권장)
+
+```bash
+npx skills add anomie7/toon-generator-skill
+```
+
+#### 수동 설치 - 글로벌 (모든 프로젝트에서 사용)
 
 ```bash
 git clone https://github.com/anomie7/toon-generator-skill.git ~/.claude/skills/toon-generator-skill
 cd ~/.claude/skills/toon-generator-skill && npm install
 ```
 
-#### 방법 2: 프로젝트 로컬 설치
+#### 수동 설치 - 프로젝트 로컬
 
 ```bash
 git clone https://github.com/anomie7/toon-generator-skill.git .claude/skills/toon-generator-skill

@@ -19,15 +19,15 @@
 ## Quick Install
 
 ```bash
+npx skills add anomie7/toon-generator-skill
+```
+
+Or manually:
+
+```bash
 # Global install (available in all projects)
 git clone https://github.com/anomie7/toon-generator-skill.git ~/.claude/skills/toon-generator-skill
 cd ~/.claude/skills/toon-generator-skill && npm install
-```
-
-```bash
-# Project-local install
-git clone https://github.com/anomie7/toon-generator-skill.git .claude/skills/toon-generator-skill
-cd .claude/skills/toon-generator-skill && npm install
 ```
 
 ## Prerequisites
