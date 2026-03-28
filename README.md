@@ -9,8 +9,7 @@
 <details>
 <summary>Demo (결과물 미리보기)</summary>
 
-<!-- TODO: R2 영상 URL로 교체 -->
-[![Demo Preview](docs/demo-preview.gif)](https://github.com/anomie7/toon-generator-skill)
+![Demo Preview](docs/demo-preview.gif)
 
 </details>
 
