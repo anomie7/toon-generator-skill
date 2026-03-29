@@ -149,29 +149,27 @@ Agent(doc-generator) 호출
 
 ---
 
-### 2.5단계: 문서 품질 검수 (doc-inspector 에이전트)
+### 2.5단계: 문서 품질 검수 루프 (doc-inspector 에이전트)
 
-**목적:** doc-generator가 생성한 문서의 품질을 독립적으로 검증한다.
+**목적:** doc-generator가 생성한 문서의 품질을 90점 이상이 될 때까지 반복 개선한다.
 
-**실행:**
+**루프 조건:** 90점 이상 달성 또는 최대 3회 반복 시 종료
+
+**루프 흐름:**
+
 ```
-Agent(doc-inspector) 호출
-- 입력: content-dir 경로
-- 검수 항목: 언어 일관성, 문서간 교차 검증, 금지 요소 위반, 콘티 구조, TODO 마커
+반복 (최대 3회):
+  1. Agent(doc-inspector) 호출 → 점수 + 감점 항목 수신
+  2. 90점 이상 → 루프 종료, 3단계로 진행
+  3. 89점 이하 → 감점 항목을 doc-generator에 전달하여 해당 문서만 재생성
+     - LANG/CROSS/PROHIBIT 감점: doc-generator로 해당 문서 재생성
+     - CONTI/TODO 감점: 오케스트레이터가 직접 해당 위치 수정
+  4. 3회 반복 후에도 90점 미달 시 → 현재 점수와 잔여 이슈를 사용자에게 보고 후 판단 위임
 ```
 
-**결과 처리:**
-
-| 결과 | 다음 단계 |
-|------|----------|
-| 전체 PASS | 3단계로 진행 |
-| LANG/CROSS/PROHIBIT FAIL | doc-generator 재호출하여 해당 문서 재생성 (최대 1회) |
-| TODO/CONTI만 FAIL | 오케스트레이터가 직접 부분 수정 후 3단계 진행 |
-
-**재생성 시:**
-- doc-inspector의 FAIL 항목을 doc-generator에 전달
-- 해당 문서만 재생성 (전체 재생성 불필요)
-- 재생성 후 다시 doc-inspector 호출 (최대 2회 반복)
+**doc-generator 재호출 시:**
+- doc-inspector 결과의 감점 항목과 수정 방향을 함께 전달
+- 감점이 발생한 문서만 재생성 (전체 재생성 불필요)
 
 ---
 
