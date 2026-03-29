@@ -1,0 +1,42 @@
+{
+  "name": "toon-generator",
+  "version": "1.0.0",
+  "description": "Instagram webtoon generation plugin for Claude Code",
+  "type": "module",
+  "author": "anomie7",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomie7/toon-generator.git"
+  },
+  "homepage": "https://github.com/anomie7/toon-generator#readme",
+  "keywords": [
+    "claude-code-plugin",
+    "webtoon",
+    "instagram",
+    "instatoon",
+    "gemini",
+    "image-generation"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "generate": "npx tsx skills/toon-slide/scripts/generate.ts",
+    "inspect": "npx tsx skills/toon-slide/scripts/inspect.ts",
+    "generate-refs": "npx tsx skills/toon-prep/scripts/generate-refs.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "RUN_E2E=true vitest run --testPathPattern e2e"
+  },
+  "dependencies": {
+    "@google/genai": "^1.0.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "tsx": "^4.19.0",
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.2"
+  }
+}
