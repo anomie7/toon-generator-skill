@@ -84,7 +84,7 @@ toon-prep               toon-slide              toon-reels
 
 ### 사전 조건
 
-1. **GEMINI_API_KEY**: [Google AI Studio](https://aistudio.google.com/)에서 무료로 발급받을 수 있습니다
+1. **GEMINI_API_KEY**: [Google AI Studio](https://aistudio.google.com/)에서 발급받을 수 있습니다
 
    ```bash
    export GEMINI_API_KEY="your-key-here"
