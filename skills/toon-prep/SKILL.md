@@ -7,6 +7,7 @@ description: >
 allowed-tools:
   - Agent(interviewer)
   - Agent(doc-generator)
+  - Agent(doc-inspector)
   - Bash(npx tsx ${CLAUDE_SKILL_DIR}/scripts/*)
   - Read
   - Write
@@ -145,6 +146,32 @@ Agent(doc-generator) 호출
 **완료 확인:**
 - 모든 문서가 정상 생성되었는지 Glob으로 확인
 - 필수 문서(`art-direction.md`, `character-sheet-detailed.md`, `conti/EP*.md`, `episode-design/EP*.md`) 누락 시 에이전트에 재생성 요청
+
+---
+
+### 2.5단계: 문서 품질 검수 (doc-inspector 에이전트)
+
+**목적:** doc-generator가 생성한 문서의 품질을 독립적으로 검증한다.
+
+**실행:**
+```
+Agent(doc-inspector) 호출
+- 입력: content-dir 경로
+- 검수 항목: 언어 일관성, 문서간 교차 검증, 금지 요소 위반, 콘티 구조, TODO 마커
+```
+
+**결과 처리:**
+
+| 결과 | 다음 단계 |
+|------|----------|
+| 전체 PASS | 3단계로 진행 |
+| LANG/CROSS/PROHIBIT FAIL | doc-generator 재호출하여 해당 문서 재생성 (최대 1회) |
+| TODO/CONTI만 FAIL | 오케스트레이터가 직접 부분 수정 후 3단계 진행 |
+
+**재생성 시:**
+- doc-inspector의 FAIL 항목을 doc-generator에 전달
+- 해당 문서만 재생성 (전체 재생성 불필요)
+- 재생성 후 다시 doc-inspector 호출 (최대 2회 반복)
 
 ---
 

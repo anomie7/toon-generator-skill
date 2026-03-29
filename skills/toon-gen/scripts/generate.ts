@@ -15,6 +15,8 @@ import {
   toSlug,
   stripDuplicatePrefix,
   saveMetadata,
+  readPngDimensions,
+  checkAspectRatio,
 } from '../lib/image-utils.js';
 
 // --- Args ---
@@ -229,18 +231,37 @@ async function main() {
           ),
         };
 
-        const imageBase64 = await withRetry(() =>
-          generateImage(
-            ai,
-            slideModel,
-            cleanedPrompt,
-            episodePrompts.stylePrefix,
-            episodePrompts.characterPrefix,
-            refImages,
-          ),
-        );
+        const expectedRatio = prompt.aspectRatio || '4:5';
+        const maxDimensionRetries = 2;
 
-        fs.writeFileSync(outputPath, Buffer.from(imageBase64, 'base64'));
+        for (let dimAttempt = 0; dimAttempt <= maxDimensionRetries; dimAttempt++) {
+          const imageBase64 = await withRetry(() =>
+            generateImage(
+              ai,
+              slideModel,
+              cleanedPrompt,
+              episodePrompts.stylePrefix,
+              episodePrompts.characterPrefix,
+              refImages,
+            ),
+          );
+
+          fs.writeFileSync(outputPath, Buffer.from(imageBase64, 'base64'));
+          const dims = readPngDimensions(outputPath);
+          const ratioOk = checkAspectRatio(dims, expectedRatio);
+
+          if (ratioOk) {
+            console.log(`  dimension: ${dims.width}x${dims.height} (${expectedRatio} OK)`);
+            break;
+          }
+
+          if (dimAttempt < maxDimensionRetries) {
+            console.warn(`  dimension: ${dims.width}x${dims.height} (expected ${expectedRatio}, retry ${dimAttempt + 1}/${maxDimensionRetries})`);
+          } else {
+            console.warn(`  dimension: ${dims.width}x${dims.height} (expected ${expectedRatio}, max retries reached - keeping last result)`);
+          }
+        }
+
         saveMetadata(outputPath, {
           slide: prompt.slideNumber,
           model: slideModel,

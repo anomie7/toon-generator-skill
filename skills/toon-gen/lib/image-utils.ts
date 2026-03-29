@@ -78,6 +78,36 @@ export function stripDuplicatePrefix(prompt: string, prefix: string): string {
   return prompt;
 }
 
+// --- PNG dimension reading (no external dependency) ---
+
+export interface ImageDimensions {
+  width: number;
+  height: number;
+}
+
+export function readPngDimensions(filePath: string): ImageDimensions {
+  const fd = fs.openSync(filePath, 'r');
+  const header = Buffer.alloc(24);
+  fs.readSync(fd, header, 0, 24, 0);
+  fs.closeSync(fd);
+
+  // PNG IHDR: width at offset 16 (4 bytes BE), height at offset 20 (4 bytes BE)
+  const width = header.readUInt32BE(16);
+  const height = header.readUInt32BE(20);
+  return { width, height };
+}
+
+export function checkAspectRatio(
+  dimensions: ImageDimensions,
+  expected: string,
+  tolerance = 0.08,
+): boolean {
+  const [wRatio, hRatio] = expected.split(':').map(Number);
+  const expectedRatio = wRatio / hRatio;
+  const actualRatio = dimensions.width / dimensions.height;
+  return Math.abs(actualRatio - expectedRatio) <= tolerance;
+}
+
 // --- Metadata ---
 
 export interface GenerationMeta {
