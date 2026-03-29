@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { EpisodePromptsSchema, ImagePromptSchema } from '../skills/toon-gen/lib/types.js';
+import { EpisodePromptsSchema, ImagePromptSchema } from '../skills/toon-slide/lib/types.js';
 
 describe('ImagePromptSchema', () => {
   it('validates a valid prompt', () => {

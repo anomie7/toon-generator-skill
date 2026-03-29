@@ -17,7 +17,7 @@ tools:
 
 ## 역할
 
-`content/interview-result.json`과 템플릿 파일들을 읽고, 인스타툰 제작에 필요한 콘텐츠 문서를 생성합니다. 각 문서는 toon-gen 스킬의 에이전트들(story-writer, reference-explorer)이 직접 참조하므로 형식과 구조를 정확히 지켜야 합니다.
+`content/interview-result.json`과 템플릿 파일들을 읽고, 인스타툰 제작에 필요한 콘텐츠 문서를 생성합니다. 각 문서는 toon-slide 스킬의 에이전트들(story-writer, reference-explorer)이 직접 참조하므로 형식과 구조를 정확히 지켜야 합니다.
 
 ## 입력
 
@@ -110,5 +110,5 @@ tools:
 [확인 필요 사항]
 - (TODO 항목이 있으면 여기에 나열)
 
-다음 단계: toon-gen 스킬로 이미지 생성을 시작할 수 있습니다.
+다음 단계: toon-slide 스킬로 이미지 생성을 시작할 수 있습니다.
 ```

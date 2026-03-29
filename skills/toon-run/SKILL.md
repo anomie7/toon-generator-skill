@@ -1,12 +1,12 @@
 ---
-name: toon-generator
+name: toon-run
 description: >
-  인스타툰 전체 파이프라인 통합 스킬. /toon-generator로 실행하면
-  콘텐츠 준비(toon-prep) -> 이미지 생성(toon-gen) -> 릴스 변환(toon-reels)까지
+  인스타툰 전체 파이프라인 통합 스킬. /toon-run로 실행하면
+  콘텐츠 준비(toon-prep) -> 이미지 생성(toon-slide) -> 릴스 변환(toon-reels)까지
   전체 워크플로우를 순차 실행한다.
 allowed-tools:
   - Skill(toon-prep)
-  - Skill(toon-gen)
+  - Skill(toon-slide)
   - Skill(toon-reels)
   - Read
   - Glob
@@ -14,10 +14,10 @@ allowed-tools:
 argument-hint: "[--content-dir path] [--episode N] [--skip-prep] [--skip-reels]"
 ---
 
-# toon-generator
+# toon-run
 
 인스타툰 전체 파이프라인 통합 스킬.
-`/toon-generator`로 실행하면 콘텐츠 준비부터 릴스 변환까지 전체 워크플로우를 오케스트레이션한다.
+`/toon-run`로 실행하면 콘텐츠 준비부터 릴스 변환까지 전체 워크플로우를 오케스트레이션한다.
 
 ## 인자
 
@@ -37,7 +37,7 @@ Phase 1: toon-prep (콘텐츠 준비)
   1.4 레퍼런스 이미지 생성 -> content/visual/references/
   >>> 사용자 확인: 캐릭터/배경 ref 검토
 
-Phase 2: toon-gen (이미지 생성) - EP별 반복
+Phase 2: toon-slide (이미지 생성) - EP별 반복
   2.1 story-writer -> 프롬프트 JSON
   2.2 슬라이드별 반복:
       A. 요소 정의
@@ -76,14 +76,14 @@ Skill(toon-prep) --content-dir {content-dir}
 
 ### Phase 2: 이미지 생성
 
-에피소드별로 toon-gen 스킬을 호출한다.
+에피소드별로 toon-slide 스킬을 호출한다.
 
 **에피소드 순서 결정:**
 - `--episode N` 지정 시: 해당 EP만
 - 미지정 시: `{content-dir}/conti/EP*.md`를 Glob으로 탐색하여 전체 EP 순차 생성
 
 ```
-Skill(toon-gen) --episode {N} --content-dir {content-dir} [--model {model}]
+Skill(toon-slide) --episode {N} --content-dir {content-dir} [--model {model}]
 ```
 
 **EP 생성 완료 후 사용자 확인:**
@@ -121,11 +121,11 @@ Skill(toon-reels) output/EP{N} [--bgm {bgm_path}]
 
 ```
 # 전체 파이프라인 (처음부터 끝까지)
-/toon-generator
+/toon-run
 
 # 콘텐츠 준비 건너뛰고 EP1만 생성
-/toon-generator --skip-prep --episode 1
+/toon-run --skip-prep --episode 1
 
 # 프로덕션 모델로 전체 생성 (릴스 제외)
-/toon-generator --model gemini-3-pro-image-preview --skip-reels
+/toon-run --model gemini-3-pro-image-preview --skip-reels
 ```

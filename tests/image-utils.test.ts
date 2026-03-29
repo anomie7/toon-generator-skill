@@ -6,7 +6,7 @@ import {
   stripDuplicatePrefix,
   toSlug,
   detectMimeType,
-} from '../skills/toon-gen/lib/image-utils.js';
+} from '../skills/toon-slide/lib/image-utils.js';
 
 const FIXTURES = path.join(import.meta.dirname, 'fixtures');
 

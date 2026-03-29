@@ -10,7 +10,7 @@
         "source": "github",
         "repo": "anomie7/toon-generator"
       },
-      "description": "Instagram webtoon generation pipeline plugin. Bundles 3 skills (toon-prep, toon-gen, toon-reels) and 4 sub-agents (story-writer, reference-explorer, interviewer, doc-generator)."
+      "description": "Instagram webtoon generation pipeline plugin. Bundles 3 skills (toon-prep, toon-slide, toon-reels) and 4 sub-agents (story-writer, reference-explorer, interviewer, doc-generator)."
     }
   ]
 }

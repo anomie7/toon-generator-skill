@@ -1,5 +1,5 @@
 ---
-name: toon-gen
+name: toon-slide
 description: >
   인스타툰 이미지 생성 파이프라인. 콘텐츠 문서(콘티/에피소드 설계/아트 디렉션)를
   입력받아 story-writer -> ref 탐색 -> pipeline-slide(검수+생성)까지 전체 워크플로우를 실행한다.
@@ -13,7 +13,7 @@ allowed-tools:
 argument-hint: "--episode N [--slide N] [--content-dir path] [--model model-name]"
 ---
 
-# toon-gen
+# toon-slide
 
 인스타툰 이미지 생성 파이프라인 스킬.
 콘텐츠 문서를 입력받아 프롬프트 JSON 생성 -> ref 탐색 -> 검수+이미지 생성까지 전체 워크플로우를 오케스트레이션한다.
